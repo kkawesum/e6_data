@@ -14,6 +14,7 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#testing">Testing</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -44,6 +45,15 @@ You will require a working Python distribution for this project. Please ensure t
 
 ### Installation
 The detailed instructions for setup and local installation can be found at **installation.txt** within the project directory.
+
+### Testing
+
+The project uses Unitests module of Python to test the code.
+We can trigger a application wide run by typing the following commands
+
+**python manage.py test**  
+
+
 
 ## Usage
 Please refer **API_endpoints.md** for more details
