@@ -1,0 +1,19 @@
+
+* Design and implement a RESTful API using any Programmatic language.
+
+* Include endpoint(s) for retrieving all posts, retrieving a single post by ID, creating a new post, updating an existing post, and deleting a post.
+
+* Implement filtering for posts based on author and creation date.
+
+* Ensure that the API follows RESTful principles and returns appropriate HTTP status codes and error messages.
+
+* Implement authentication and authorization(Read/Write/Administer)  mechanisms.
+
+* Implement pagination for retrieving a large number of posts.
+
+* Design/Define database architecture (SQL or NoSQL) to persist the data.
+
+* Write unit tests to validate the sanity of the application
+
+* Provide API documentation for the same.
+

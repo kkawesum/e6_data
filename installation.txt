@@ -1,0 +1,27 @@
+The setup instructions are as follows:
+
+1. Clone the repository
+
+git clone https://github.com/kkawesum/e6_data.git
+
+2. Create your own virtual environment
+
+python3 -m venv venv
+source venv/bin/activate
+
+3. Install your requirements
+
+pip install -r requirements.txt
+
+4. Make your migrations
+
+$ python manage.py makemigrations
+$ python manage.py migrate
+
+5. Create a new superuser
+
+python manage.py createsuperuser
+
+6. Start the development server
+
+python manage.py runserver

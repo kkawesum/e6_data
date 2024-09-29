@@ -32,25 +32,32 @@ def get_one(request,pk):
                     'message': 'something went wrong'
                 },status=status.HTTP_400_BAD_REQUEST)
                         
-
-
-def get_all(request):
-    if request.method=="GET":
-        blogs = Blog.objects.all()
-        p = Paginator(blogs, 5)
-        page_number = request.GET.get('page')
-        try:
-            page_obj = p.get_page(page_number)  # returns the desired page object
-        except PageNotAnInteger:
-            # if page_number is not an integer then assign the first page
-            page_obj = p.page(1)
-        except EmptyPage:
-            # if page is empty then return last page
-            page_obj = p.page(p.num_pages)
-        context = {'page_obj': page_obj}
-        # sending the page object to index.html
-        return render(request, 'index.html', context)    
     
+
+
+
+class PublicBlog(APIView):
+    def get(self,request):
+        try:
+            blogs = Blog.objects.all()
+            
+            if request.GET.get('search'):
+                search = blogs.filter(Q(user__icontains=search)| Q(created_at__icontains=search))
+            
+            page_number = request.GET.get('page',1)
+            paginator = Paginator(blogs,2)
+            serializer = BlogSerializer(paginator.page(page_number),many=True)
+            return Response({
+                'data': serializer.data,
+                'message': 'blogs fetched successfully'
+            },status=status.HTTP_200_OK)
+        
+        except Exception as e:
+            return Response({
+                    'data': {},
+                    'message': 'something went wrong'
+                },status=status.HTTP_400_BAD_REQUEST)
+        
     
 class BlogView(APIView):
     permission_classes = [IsAuthenticated]
@@ -100,7 +107,71 @@ class BlogView(APIView):
                     'data': {},
                     'message': 'something went wrong'
                 },status=status.HTTP_400_BAD_REQUEST)
-                
+
+    def patch(self,request):
+        try:
+            data = request.data
+            blog = Blog.objects.filter(uid=data.get('uid'))
+            if not blog.exists():
+                return Response({
+                    'data': {},
+                    'message': 'invalid uid'
+                },status=status.HTTP_400_BAD_REQUEST)
+
+            if request.user != blog[0].user:
+                return Response({
+                    'data': {},
+                    'message': 'you are not authorized'
+                },status=status.HTTP_400_BAD_REQUEST)
+            
+            serializer = BlogSerializer(blog[0],data=data, partial = True)
+
+            if not serializer.is_valid():
+                return Response({
+                    'data': serializer.errors,
+                    'message': 'something went wrong'
+                },status=status.HTTP_400_BAD_REQUEST)
+            
+            serializer.save()
+            return Response({
+                    'data': serializer.data,
+                    'message': 'blog updated successfully'
+                },status=status.HTTP_202_ACCEPTED
+                )
+        except Exception as e:
+            return Response({
+                    'data': {},
+                    'message': 'something went wrong'
+                },status=status.HTTP_400_BAD_REQUEST)    
+            
+
+    def delete(self,request):
+        try:
+            data = request.data
+            blog = Blog.objects.filter(uid=data.get('uid'))
+            if not blog.exists():
+                return Response({
+                    'data': {},
+                    'message': 'invalid uid'
+                },status=status.HTTP_400_BAD_REQUEST)
+
+            if request.user != blog[0].user:
+                return Response({
+                    'data': {},
+                    'message': 'you are not authorized'
+                },status=status.HTTP_400_BAD_REQUEST)
+            
+            blog[0].delete()
+            return Response({
+                    'data': serializer.data,
+                    'message': 'blog updated successfully'
+                },status=status.HTTP_202_ACCEPTED
+                )
+        except Exception as e:
+            return Response({
+                    'data': {},
+                    'message': 'something went wrong'
+                },status=status.HTTP_400_BAD_REQUEST)
 
 
 
