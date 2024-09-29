@@ -7,8 +7,26 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from .serializers import BlogSerializer
 from .models import Blog
 from django.db.models import Q
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-# Create your views here.
+def get_all(request):
+    if request.method=="GET":
+        blogs = Blog.objects.all()
+        p = Paginator(blogs, 5)
+        page_number = request.GET.get('page')
+        try:
+            page_obj = p.get_page(page_number)  # returns the desired page object
+        except PageNotAnInteger:
+            # if page_number is not an integer then assign the first page
+            page_obj = p.page(1)
+        except EmptyPage:
+            # if page is empty then return last page
+            page_obj = p.page(p.num_pages)
+        context = {'page_obj': page_obj}
+        # sending the page object to index.html
+        return render(request, 'index.html', context)    
+    
+    
 class BlogView(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
@@ -16,6 +34,7 @@ class BlogView(APIView):
     def get(self,request):
         try:
             blogs = Blog.objects.filter(user=request.user)
+            
             if request.GET.get('search'):
                 search = blogs.filter(Q(title__icontains=search)| Q(blog_text__icontains=search))
             serializer = BlogSerializer(blogs, many=True)
