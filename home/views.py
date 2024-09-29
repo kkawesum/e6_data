@@ -9,6 +9,31 @@ from .models import Blog
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
+def get_one(request,pk):
+    if request.method=="GET":
+        try:
+            post = Blog.objects.all(pk=pk)
+            serializer = BlogSerializer(post, many=False)
+            if not serializer.is_valid():
+                return Response({
+                    'data': serializer.errors,
+                    'message': 'something went wrong'
+                },status=status.HTTP_400_BAD_REQUEST)
+
+            return Response({
+                    'data': serializer.data,
+                    'message': 'blog created successfully'
+                },status=status.HTTP_201_CREATED
+                )
+        except Exception as e:
+            return Response({
+                    'data': {},
+                    'message': 'something went wrong'
+                },status=status.HTTP_400_BAD_REQUEST)
+                        
+
+
 def get_all(request):
     if request.method=="GET":
         blogs = Blog.objects.all()
@@ -36,7 +61,7 @@ class BlogView(APIView):
             blogs = Blog.objects.filter(user=request.user)
             
             if request.GET.get('search'):
-                search = blogs.filter(Q(title__icontains=search)| Q(blog_text__icontains=search))
+                search = blogs.filter(Q(user__icontains=search)| Q(created_at__icontains=search))
             serializer = BlogSerializer(blogs, many=True)
 
             return Response({
