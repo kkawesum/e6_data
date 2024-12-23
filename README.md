@@ -14,6 +14,7 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#testing">Testing</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -36,12 +37,22 @@ Simple RestFUL API for handling Blog Post Create, Read, Update and Delete operat
 
 ## Getting Started
 
-The detailed instructions for setup and local installation can be found at **installation.txt** within the project directory.
 
 
 ### Prerequisites
 
 You will require a working Python distribution for this project. Please ensure the version is above 3.9 to avoid compatibility and dependency errors
+
+### Installation
+The detailed instructions for setup and local installation can be found at **installation.txt** within the project directory.
+
+### Testing
+
+The project uses Unitests module of Python to test the code.
+We can trigger a application wide run by typing the following commands
+
+**python manage.py test**  
+
 
 
 ## Usage

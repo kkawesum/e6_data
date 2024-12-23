@@ -12,7 +12,7 @@ The base URL for all blog API requests is:
 
 ## Endpoints
 
-### `GET /all`
+### 1 `GET /all`
 
 Returns a paginated list of all blog posts(for un-authenticated users).
 
@@ -66,9 +66,9 @@ This API uses the following return codes:
 - `200 Request OK`: The records were fetched successfully
 
 
-### `GET /blog`
+### 2 `GET /blog`
 
-Returns a paginated list of all blog posts along with search functionality (intended onlyfor authorized users).
+Returns a list of all blog posts along with search functionality (intended onlyfor authorized users).
 
 
 ### Response
@@ -139,7 +139,7 @@ This API uses the following return codes:
 
 
 
-### `POST /blog`
+### 3 `POST /blog`
 
 Creates a new Blog post after authenticating the user
 
@@ -185,7 +185,7 @@ This API uses the following return codes:
 - `201 Object created`: The records were created successfully
 
 
-### `PATCH /blog`
+### 4 `PATCH /blog`
 
 Updates a Blog post after authenticating the user
 
@@ -231,7 +231,7 @@ This API uses the following return codes:
 - `201 Object updated`: The records were updated successfully
 
 
-### `DELETE /blog`
+### 5 `DELETE /blog`
 
 Deletes a Blog post after authenticating the user
 
