@@ -16,7 +16,7 @@ The base URL for all blog API requests is:
 
 Returns a paginated list of all blog posts(for un-authenticated users).
 
-
+d
 ### Response
 
 Returns a JSON object with the following properties:
